@@ -1,0 +1,42 @@
+{
+  "name": "ee-editable-input",
+  "authors": [
+    "Anonymous <anonymous@example.com>"
+  ],
+  "description": "An element providing a solution to no problem in particular.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
+  "main": "ee-editable-input.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-input": "^1.1.11",
+    "iron-flex-layout": "^1.3.1",
+    "paper-icon-button": "^1.1.1",
+    "iron-icons": "^1.1.3",
+    "iron-icon": "^1.0.8",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.2"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0"
+  },
+  "_release": "2c3ea75124",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2c3ea75124789e262006ff184f2d25e9155a1c83"
+  },
+  "_source": "https://github.com/ElfyCares/ee-editable-input.git",
+  "_target": "master",
+  "_originalSource": "https://github.com/ElfyCares/ee-editable-input.git",
+  "_direct": true
+}
