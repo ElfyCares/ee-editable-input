@@ -1,0 +1,202 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-input/paper-textarea.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+<!--
+An element providing a solution to no problem in particular.
+
+Example:
+
+    <ee-editable-input></ee-editable-input>
+
+@demo demo/index.html
+@hero hero.svg
+-->
+
+<dom-module id="ee-editable-input">
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      #icon {
+        height: 38px;
+        width: 38px;
+        opacity: 0.4;
+        transition: opacity .5s ease-in-out;
+       -moz-transition: opacity .5s ease-in-out;
+       -webkit-transition: opacity .5s ease-in-out;
+       @apply(--editable-input-icon);
+      }
+
+      #icon.edit {
+        opacity: 1;
+      }
+
+      #icon:hover {
+        opacity: 1;
+        transition: opacity .25s ease-in-out;
+       -moz-transition: opacity .25s ease-in-out;
+       -webkit-transition: opacity .25s ease-in-out;
+      }
+
+      .edit {
+        color: green;
+        opacity: 1;
+      }
+
+      #row {
+        @apply(--layout-horizontal);
+      }
+
+      #spacer {
+        @apply(--layout-flex);
+      }
+
+      .input {
+        min-width: 100px;
+        --paper-input-container-input: {
+          font-size: 0.9em;
+          line-height: 1em;
+        };
+
+        --paper-input-container-underline-disabled: {
+          display: none;
+        };
+
+        --paper-input-container-disabled: {
+          opacity: 0.9;
+        };
+
+        @apply(--editable-input-input);
+      }
+
+    </style>
+
+    <div id="row">
+      <paper-textarea id="mainInput" class="input"
+          label="[[label]]"
+          disabled="[[disabled]]"
+          placeholder="[[placeholder]]"
+          value="{{value::change}}"
+          rows$="[[rows]]"
+          max-rows$="[[maxRows]]"
+          >
+      </paper-textarea>
+      <paper-icon-button id="icon" icon$="[[icon]]" on-tap="_toggleEdit"></paper-icon-button>
+      <paper-tooltip for="icon" position$="[[tooltipPosition]]">[[_tooltipText]]</paper-tooltip>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'ee-editable-input',
+
+      properties: {
+        icon: {
+          type: String,
+          value: 'icons:create'
+        },
+
+        iconEdit: {
+          type: String,
+          value: 'icons:check'
+        },
+          
+        disabled: {
+          type: Boolean,
+          value: true,
+          notify: true
+        },
+
+        tooltipPosition: {
+          type: String,
+          value: 'right',
+          notify: true
+        },
+
+        tooltip: {
+          type: String,
+          value: 'Edit'
+        },
+
+        tooltipEdit: {
+          type: String,
+          value: 'Save'
+        },
+
+        _tooltipText: {
+          type: String,
+          computed: '_computeToolTip(tooltip, tooltipEdit, disabled)'
+        },
+          
+        label: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        placeholder: {
+          type: String,
+          value: 'Text ...',
+          notify: true
+        },
+
+        value: {
+          type: String,
+          value: '',
+          notify: true
+        },
+
+        row: {
+          type: Number,
+          value: 0
+        },
+        
+        maxRows: {
+          type: Number,
+          value: 0
+       },
+                              
+      },
+
+      _computeToolTip: function(tooltip, tooltipEdit, disabled) {
+        return disabled ? tooltip : tooltipEdit;
+      },     
+
+      enable: function() {
+        this.disabled = false;
+        this.$.icon.icon = this.iconEdit;
+        this.$.icon.classList.add('edit');
+        this.fire('edit-start');
+      },
+
+      disable: function() {
+        this.disabled = true;
+        this.$.icon.icon = this.icon;
+        this.$.icon.classList.remove('edit');
+        this.fire('edit-end');
+      },        
+
+      _toggleEdit: function() {
+        if (this.disabled) {
+          this.enable();
+        } else {
+          this.disable();
+        }
+      },
+
+    });
+  </script>
+</dom-module>
