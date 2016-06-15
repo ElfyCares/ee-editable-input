@@ -15,13 +15,17 @@ An element providing a solution to no problem in particular.
 
 Example:
 
-    <ee-editable-input></ee-editable-input>
+    <ee-editable-input-wrapper>
+      <paper-input label="Hallo"></paper-input>
+      <paper-input label="Mie"></paper-input>
+      <paper-textarea label="Text Area"></paper-textarea>
+    </ee-editable-input-wrapper>
 
 @demo demo/index.html
 @hero hero.svg
 -->
 
-<dom-module id="ee-editable-input">
+<dom-module id="ee-editable-input-wrapper">
   <template>
     <style>
       :host {
@@ -53,47 +57,17 @@ Example:
       .edit {
         color: green;
         opacity: 1;
-         @apply(--editable-input-edit-state);
+        @apply(--editable-input-edit-state);
       }
 
       #row {
         @apply(--layout-horizontal);
       }
 
-      #spacer {
-        @apply(--layout-flex);
-      }
-
-      .input {
-        min-width: 100px;
-        --paper-input-container-input: {
-          font-size: 0.9em;
-          line-height: 1em;
-        };
-
-        --paper-input-container-underline-disabled: {
-          display: none;
-        };
-
-        --paper-input-container-disabled: {
-          opacity: 0.95;
-        };
-
-        @apply(--editable-input-input);
-      }
-
     </style>
 
     <div id="row">
-      <paper-textarea id="mainInput" class="input"
-          label="[[label]]"
-          disabled="[[disabled]]"
-          placeholder="[[placeholder]]"
-          value="{{value::change}}"
-          rows$="[[rows]]"
-          max-rows$="[[maxRows]]"
-          >
-      </paper-textarea>
+      <content></content>
       <paper-icon-button id="icon" icon$="[[icon]]" on-tap="_toggleEdit"></paper-icon-button>
       <paper-tooltip for="icon" position$="[[tooltipPosition]]">[[_tooltipText]]</paper-tooltip>
     </div>
@@ -102,7 +76,7 @@ Example:
 
   <script>
     Polymer({
-      is: 'ee-editable-input',
+      is: 'ee-editable-input-wrapper',
 
       properties: {
         icon: {
@@ -141,43 +115,34 @@ Example:
           type: String,
           computed: '_computeToolTip(tooltip, tooltipEdit, disabled)'
         },
-          
-        label: {
-          type: String,
-          value: '',
-          notify: true
-        },
-
-        placeholder: {
-          type: String,
-          value: 'Text ...',
-          notify: true
-        },
-
-        value: {
-          type: String,
-          value: '',
-          notify: true
-        },
-
-        row: {
-          type: Number,
-          value: 0
-        },
-        
-        maxRows: {
-          type: Number,
-          value: 0
-       },
                               
       },
 
+      attached: function() {
+        this._updateState();
+      },
+        
       _computeToolTip: function(tooltip, tooltipEdit, disabled) {
         return disabled ? tooltip : tooltipEdit;
-      },     
+      },
+
+      _updateState: function() {
+        var paperInputs = Polymer.dom(this).querySelectorAll('paper-input');
+        var paperTextareas = Polymer.dom(this).querySelectorAll('paper-textarea');
+
+        for (var i = paperInputs.length - 1; i >= 0; i--) {
+          paperInputs[i].disabled = this.disabled;
+        }
+
+        for (var i = paperTextareas.length - 1; i >= 0; i--) {
+          paperTextareas[i].disabled = this.disabled;
+        }
+
+      },    
 
       enable: function() {
         this.disabled = false;
+        this._updateState();
         this.$.icon.icon = this.iconEdit;
         this.$.icon.classList.add('edit');
         this.fire('edit-start');
@@ -185,6 +150,7 @@ Example:
 
       disable: function() {
         this.disabled = true;
+        this._updateState();
         this.$.icon.icon = this.icon;
         this.$.icon.classList.remove('edit');
         this.fire('edit-end');

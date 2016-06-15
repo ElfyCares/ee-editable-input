@@ -6,13 +6,22 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>ee-double-input Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../../paper-input/paper-textarea.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
     <link rel="import" href="../ee-editable-input.html">
+    <link rel="import" href="../ee-editable-input-wrapper.html">
   </head>
   <body unresolved>
 
     <p>An example of <code>&lt;ee-editable-input&gt;</code>:</p>
 
     <ee-editable-input></ee-editable-input>
+
+    <ee-editable-input-wrapper>
+      <paper-input label="Hallo"></paper-input>
+      <paper-input label="Mie"></paper-input>
+      <paper-textarea label="Text Area"></paper-textarea>
+    </ee-editable-input-wrapper>
 
   </body>
 </html>
